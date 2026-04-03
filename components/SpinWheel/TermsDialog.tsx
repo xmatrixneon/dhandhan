@@ -1,124 +1,71 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { FileText, Clock, Smartphone, Gamepad2, AlertCircle, Shield } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { FileText, Clock, Smartphone, Gamepad2, AlertCircle, Shield, Banknote } from "lucide-react";
 
 interface TermsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+const TERMS = [
+  { icon: <Smartphone className="w-4 h-4" />, color: "#8b5cf6", title: "App Installation", body: "Download from official app stores only. We are not responsible for apps from unauthorized sources." },
+  { icon: <Clock       className="w-4 h-4" />, color: "#60a5fa", title: "Withdrawal Processing", body: "All requests processed in 24–48 hours. Ensure your UPI details are correct." },
+  { icon: <Gamepad2    className="w-4 h-4" />, color: "#34d399", title: "Daily Play Required", body: "Play daily to maintain your streak. Missing a day resets your streak bonus." },
+  { icon: <AlertCircle className="w-4 h-4" />, color: "#facc15", title: "Spin Limits", body: "Limited to 2 spins per 24 hours. Additional spins available after the window expires." },
+  { icon: <Shield      className="w-4 h-4" />, color: "#f87171", title: "Fair Play Policy", body: "Any manipulation or exploitation results in immediate account suspension and forfeiture of winnings." },
+  { icon: <Banknote    className="w-4 h-4" />, color: "#fb923c", title: "Withdrawal Terms", body: "Minimum ₹1 per withdrawal. We are not liable for losses due to incorrect payment details." },
+  { icon: <FileText    className="w-4 h-4" />, color: "#94a3b8", title: "Account Responsibility", body: "You are responsible for all activities under your account. Keep your details confidential." },
+];
+
 export function TermsDialog({ open, onOpenChange }: TermsDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-            <FileText className="h-6 w-6 text-purple-600" />
-            Terms & Conditions
-          </DialogTitle>
-          <DialogDescription>
-            Please read our terms carefully before playing
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent
+        className="max-w-sm rounded-3xl border-0 text-white p-0 overflow-hidden"
+        style={{ background: "#0d0620", maxHeight: "88vh" }}>
+        <div className="h-1 w-full" style={{ background: "linear-gradient(90deg,#6d28d9,#ec4899,#f97316)" }} />
 
-        <div className="space-y-4 py-4">
-          {/* App Installation */}
-          <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-lg">
-            <Smartphone className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">App Installation</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Download and install the Dhana Dhan app from official app stores only. We are not responsible for apps downloaded from unauthorized sources.
-              </p>
-            </div>
-          </div>
+        <div className="px-5 pt-5 pb-2">
+          <DialogHeader>
+            <DialogTitle className="text-white text-xl font-bold flex items-center gap-2">
+              <FileText className="w-5 h-5 text-yellow-400" /> Terms &amp; Conditions
+            </DialogTitle>
+            <p className="text-white/40 text-sm mt-1">Read before playing</p>
+          </DialogHeader>
+        </div>
 
-          {/* Withdrawal Processing */}
-          <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-lg">
-            <Clock className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Withdrawal Processing Time</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                All withdrawal requests are processed within <strong>24-48 hours</strong>. Please allow this time for processing.
-              </p>
-            </div>
-          </div>
+        <div className="overflow-y-auto px-5 pb-6" style={{ maxHeight: "calc(88vh - 140px)" }}>
+          <div className="space-y-3 mt-2">
+            {TERMS.map(({ icon, color, title, body }) => (
+              <div key={title}
+                className="flex items-start gap-3 p-3.5 rounded-2xl border border-white/8"
+                style={{ background: "rgba(255,255,255,0.04)" }}>
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+                  style={{ background: `${color}22`, color }}>
+                  {icon}
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">{title}</p>
+                  <p className="text-white/45 text-xs mt-0.5 leading-relaxed">{body}</p>
+                </div>
+              </div>
+            ))}
 
-          {/* Daily Play Required */}
-          <div className="flex items-start gap-3 p-3 bg-green-50 rounded-lg">
-            <Gamepad2 className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Daily Play Required</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                You must play daily to maintain your streak bonus. Missing a day will reset your streak. Daily bonuses are available every 24 hours.
-              </p>
-            </div>
-          </div>
-
-          {/* Spin Limits */}
-          <div className="flex items-start gap-3 p-3 bg-orange-50 rounded-lg">
-            <AlertCircle className="h-5 w-5 text-orange-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Spin Limits</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Limited to <strong>2 spins per 24 hours</strong>. Additional spins become available after the 24-hour window expires.
-              </p>
-            </div>
-          </div>
-
-          {/* Fair Play */}
-          <div className="flex items-start gap-3 p-3 bg-red-50 rounded-lg">
-            <Shield className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Fair Play Policy</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Any attempt to manipulate, exploit, or cheat the game will result in immediate account suspension and forfeiture of all winnings.
-              </p>
-            </div>
-          </div>
-
-          {/* Account Responsibility */}
-          <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-            <FileText className="h-5 w-5 text-gray-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Account Responsibility</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                You are responsible for maintaining the confidentiality of your account. All activities under your account are your responsibility.
-              </p>
-            </div>
-          </div>
-
-          {/* Withdrawal Terms */}
-          <div className="flex items-start gap-3 p-3 bg-yellow-50 rounded-lg">
-            <Clock className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <div>
-              <h3 className="font-bold text-gray-900">Withdrawal Terms</h3>
-              <p className="text-sm text-gray-600 mt-1">
-                Minimum withdrawal amount is ₹1. Ensure your UPI ID and phone number are correct. We are not responsible for incorrect details provided.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-xs text-gray-500 text-center pt-2">
-            <p>By playing Dhana Dhan, you agree to these terms.</p>
-            <p className="mt-1">Last updated: April 2026</p>
+            <p className="text-white/25 text-[10px] text-center py-2">
+              By playing Dhana Dhan you agree to these terms · Last updated April 2026
+            </p>
           </div>
         </div>
 
-        <Button
-          onClick={() => onOpenChange(false)}
-          className="w-full bg-gradient-to-r from-purple-600 to-pink-600"
-        >
-          I Understand
-        </Button>
+        <div className="px-5 pb-5 pt-2">
+          <button
+            onClick={() => onOpenChange(false)}
+            className="w-full rounded-2xl h-12 font-bold text-[#080514] active:scale-95 transition-transform"
+            style={{ background: "linear-gradient(135deg,#facc15,#f97316)" }}>
+            I Understand ✓
+          </button>
+        </div>
       </DialogContent>
     </Dialog>
   );

@@ -1,19 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { claimDailyBonus, getDailyBonusInfo, DAILY_BONUS_AMOUNTS } from "@/lib/walletUtils";
 import { toast } from "sonner";
-import { Calendar, Gift, CheckCircle2, Flame, TrendingUp, Clock } from "lucide-react";
+import { Calendar, Gift, CheckCircle2, Flame, Clock, TrendingUp } from "lucide-react";
 
 interface DailyBonusProps {
   open: boolean;
@@ -21,225 +12,243 @@ interface DailyBonusProps {
 }
 
 export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
-  const [bonusInfo, setBonusInfo] = useState(getDailyBonusInfo());
-  const [isClaiming, setIsClaiming] = useState(false);
+  const [info, setInfo] = useState(getDailyBonusInfo);
+  const [busy, setBusy] = useState(false);
 
-  useEffect(() => {
-    if (open) {
-      setBonusInfo(getDailyBonusInfo());
-    }
-  }, [open]);
+  useEffect(() => { if (open) setInfo(getDailyBonusInfo()); }, [open]);
 
-  const handleClaimBonus = async () => {
-    if (!bonusInfo.canClaim) {
-      toast.error("Already claimed today! Come back tomorrow.");
-      return;
-    }
-
-    setIsClaiming(true);
-
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    const result = claimDailyBonus();
-
-    if (result.success) {
-      toast.success(`🎉 Daily bonus claimed! +₹${result.bonusAmount}`, {
-        description: `Current streak: ${result.newStreak || 1} day${(result.newStreak || 1) > 1 ? "s" : ""}`,
-        duration: 5000,
+  const handleClaim = async () => {
+    if (!info.canClaim) { toast.error("Already claimed today! Come back tomorrow."); return; }
+    setBusy(true);
+    await new Promise((r) => setTimeout(r, 900));
+    const res = claimDailyBonus();
+    if (res.success) {
+      toast.success(`🎉 +₹${res.bonusAmount} claimed!`, {
+        description: `Streak: ${res.newStreak ?? 1} day${(res.newStreak ?? 1) > 1 ? "s" : ""}`,
       });
-      setBonusInfo(getDailyBonusInfo());
+      setInfo(getDailyBonusInfo());
     } else {
-      toast.error(result.error || "Failed to claim bonus");
+      toast.error(res.error ?? "Failed to claim");
     }
-
-    setIsClaiming(false);
+    setBusy(false);
   };
 
-  const getStreakEmoji = (days: number) => {
-    if (days >= 30) return "🔥";
-    if (days >= 14) return "⚡";
-    if (days >= 7) return "💪";
-    if (days >= 3) return "🌟";
-    return "✨";
-  };
-
-  const getStreakColor = (days: number) => {
-    if (days >= 30) return "text-destructive";
-    if (days >= 14) return "text-accent-foreground";
-    if (days >= 7) return "text-accent";
-    if (days >= 3) return "text-primary";
-    return "text-muted-foreground";
-  };
+  const streakEmoji =
+    info.currentStreak >= 30 ? "🔥" :
+    info.currentStreak >= 14 ? "⚡" :
+    info.currentStreak >= 7  ? "💪" :
+    info.currentStreak >= 3  ? "🌟" : "✨";
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="rounded-t-3xl max-h-[90vh] overflow-y-auto">
-        <SheetHeader className="text-center pb-4">
-          <SheetTitle className="text-2xl font-bold flex items-center justify-center gap-2">
-            <Calendar className="h-6 w-6" />
-            Daily Bonus
-          </SheetTitle>
-          <SheetDescription className="text-center">
-            Claim your daily reward and build your streak!
-          </SheetDescription>
-        </SheetHeader>
+      <SheetContent
+        side="bottom"
+        className="border-0 text-white p-0"
+        style={{
+          background: "#0d0620",
+          borderRadius: "24px 24px 0 0",
+          maxHeight: "92vh",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {/* Drag pill */}
+        <div className="h-1 w-10 rounded-full bg-white/20 mx-auto mt-3 mb-1 shrink-0" />
 
-        <div className="space-y-4 pb-4">
-          {/* Current Streak Card */}
-          <Card className="bg-gradient-to-r from-accent/20 to-secondary/20 border-2 border-accent/30">
-            <div className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Current Streak</p>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-4xl ${getStreakColor(bonusInfo.currentStreak)}`}>
-                      {getStreakEmoji(bonusInfo.currentStreak)}
-                    </span>
-                    <span className="text-3xl font-bold text-foreground">
-                      {bonusInfo.currentStreak}
-                    </span>
-                    <span className="text-lg text-muted-foreground">day{bonusInfo.currentStreak !== 1 ? "s" : ""}</span>
-                  </div>
-                </div>
-                <Flame className={`h-8 w-8 ${bonusInfo.currentStreak >= 7 ? "text-accent" : "text-muted-foreground/30"}`} />
-              </div>
-            </div>
-          </Card>
+        {/* Fixed header */}
+        <div className="px-5 pt-3 pb-4 shrink-0">
+          <SheetHeader>
+            <SheetTitle className="text-white text-xl font-bold flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-yellow-400" />
+              Daily Bonus
+            </SheetTitle>
+            <p className="text-white/40 text-sm mt-1">
+              Claim every day to build your streak
+            </p>
+          </SheetHeader>
+        </div>
 
-          {/* Next Bonus Info */}
-          <Card>
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <p className="text-sm text-muted-foreground">Next Bonus</p>
-                  <p className="text-2xl font-bold text-primary">
-                    ₹{bonusInfo.nextBonusAmount}
-                  </p>
-                </div>
-                <Gift className="h-8 w-8 text-primary" />
-              </div>
+        {/* Divider */}
+        <div className="h-px bg-white/8 mx-5 shrink-0" />
 
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-muted-foreground">
-                  {bonusInfo.canClaim ? (
-                    <span className="text-green-600 font-semibold">Available now!</span>
-                  ) : (
-                    <span className="flex items-center gap-1">
-                      <Clock className="h-4 w-4" />
-                      Claim tomorrow
-                    </span>
-                  )}
-                </div>
-                <Badge variant={bonusInfo.canClaim ? "default" : "secondary"}>
-                  Day {bonusInfo.currentStreak + 1}
-                </Badge>
-              </div>
-            </div>
-          </Card>
+        {/* Scrollable body */}
+        <div
+          className="flex-1 overflow-y-auto overscroll-contain px-5 py-4 space-y-4"
+          style={{ paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
+        >
 
-          {/* Bonus Progression */}
-          <Card>
-            <div className="p-4">
-              <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                Bonus Progression
-              </h3>
-              <div className="grid grid-cols-4 gap-2">
-                {DAILY_BONUS_AMOUNTS.map((amount, index) => {
-                  const dayNumber = index + 1;
-                  const isPast = dayNumber <= bonusInfo.currentStreak;
-                  const isNext = dayNumber === bonusInfo.currentStreak + 1;
-
-                  return (
-                    <div
-                      key={index}
-                      className={`text-center p-3 rounded-lg border-2 transition-all ${
-                        isPast
-                          ? "bg-green-50 border-green-300"
-                          : isNext
-                          ? "bg-primary/10 border-primary ring-2 ring-primary"
-                          : "bg-muted border-muted"
-                      }`}
-                    >
-                      <div className="text-xs text-muted-foreground mb-1">Day {dayNumber}</div>
-                      <div className={`text-lg font-bold ${isPast ? "text-green-600" : isNext ? "text-primary" : "text-muted-foreground"}`}>
-                        ₹{amount}
-                      </div>
-                      {isPast && (
-                        <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto mt-1" />
-                      )}
-                      {isNext && (
-                        <div className="w-2 h-2 bg-primary rounded-full mx-auto mt-1 animate-pulse" />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </Card>
-
-          {/* Stats */}
-          <Card>
-            <div className="p-4">
-              <h3 className="font-bold text-lg mb-3">Your Stats</h3>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-secondary/50 rounded-lg p-3 text-center">
-                  <Calendar className="h-5 w-5 mx-auto mb-1 text-secondary-foreground" />
-                  <p className="text-2xl font-bold text-secondary-foreground">
-                    {bonusInfo.totalDays}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Total Days</p>
-                </div>
-                <div className="bg-accent/50 rounded-lg p-3 text-center">
-                  <TrendingUp className="h-5 w-5 mx-auto mb-1 text-accent-foreground" />
-                  <p className="text-2xl font-bold text-accent-foreground">
-                    {bonusInfo.currentStreak}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Best Streak</p>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Claim Button */}
-          <Button
-            onClick={handleClaimBonus}
-            disabled={!bonusInfo.canClaim || isClaiming}
-            className={`w-full h-14 text-lg font-bold transition-transform ${
-              bonusInfo.canClaim
-                ? "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95"
-                : "bg-muted text-muted-foreground cursor-not-allowed"
-            }`}
+          {/* Streak hero card */}
+          <div
+            className="rounded-2xl p-5 relative overflow-hidden border border-white/10"
+            style={{
+              background: "linear-gradient(135deg,rgba(249,115,22,0.18),rgba(250,204,21,0.10))",
+            }}
           >
-            {isClaiming ? (
-              "Claiming..."
-            ) : bonusInfo.canClaim ? (
-              <>
-                <Gift className="h-5 w-5 mr-2" />
-                Claim ₹{bonusInfo.nextBonusAmount}
-              </>
-            ) : (
-              <>
-                <CheckCircle2 className="h-5 w-5 mr-2" />
-                Claimed Today
-              </>
-            )}
-          </Button>
+            {/* Decorative blob */}
+            <div
+              className="absolute -right-6 -top-6 w-24 h-24 rounded-full pointer-events-none"
+              style={{ background: "rgba(250,204,21,0.08)" }}
+            />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-2">
+                  Current Streak
+                </p>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-5xl">{streakEmoji}</span>
+                  <span className="text-4xl font-black text-white">{info.currentStreak}</span>
+                  <span className="text-white/50 text-base">
+                    day{info.currentStreak !== 1 ? "s" : ""}
+                  </span>
+                </div>
+              </div>
+              <Flame
+                className={`w-10 h-10 shrink-0 ${
+                  info.currentStreak >= 7 ? "text-orange-400" : "text-white/12"
+                }`}
+              />
+            </div>
+          </div>
 
-          {!bonusInfo.canClaim && (
-            <p className="text-xs text-center text-muted-foreground">
+          {/* Next bonus + availability row */}
+          <div className="grid grid-cols-2 gap-3">
+            <div
+              className="rounded-2xl p-4 border border-white/8"
+              style={{ background: "rgba(255,255,255,0.04)" }}
+            >
+              <p className="text-white/45 text-xs mb-1">Next Bonus</p>
+              <p className="text-yellow-400 font-black text-2xl">₹{info.nextBonusAmount}</p>
+              <p className="text-white/30 text-[10px] mt-1">Day {info.currentStreak + 1}</p>
+            </div>
+            <div
+              className="rounded-2xl p-4 border flex flex-col justify-between"
+              style={{
+                background: info.canClaim ? "rgba(52,211,153,0.08)" : "rgba(255,255,255,0.04)",
+                borderColor: info.canClaim ? "rgba(52,211,153,0.25)" : "rgba(255,255,255,0.08)",
+              }}
+            >
+              <p className="text-white/45 text-xs mb-1">Status</p>
+              <div className="flex items-center gap-1.5">
+                {info.canClaim
+                  ? <><Gift  className="w-4 h-4 text-emerald-400" /><span className="text-emerald-400 font-bold text-sm">Available!</span></>
+                  : <><Clock className="w-4 h-4 text-white/30" />  <span className="text-white/40 font-bold text-sm">Tomorrow</span></>}
+              </div>
+            </div>
+          </div>
+
+          {/* Stats row */}
+          <div className="grid grid-cols-2 gap-3">
+            <div
+              className="rounded-2xl p-4 text-center border border-white/8"
+              style={{ background: "rgba(255,255,255,0.04)" }}
+            >
+              <TrendingUp className="w-5 h-5 mx-auto mb-1.5 text-blue-400" />
+              <p className="text-2xl font-black text-white">{info.totalDays}</p>
+              <p className="text-white/40 text-xs mt-0.5">Total Days</p>
+            </div>
+            <div
+              className="rounded-2xl p-4 text-center border border-white/8"
+              style={{ background: "rgba(255,255,255,0.04)" }}
+            >
+              <Flame className="w-5 h-5 mx-auto mb-1.5 text-orange-400" />
+              <p className="text-2xl font-black text-white">{info.currentStreak}</p>
+              <p className="text-white/40 text-xs mt-0.5">Best Streak</p>
+            </div>
+          </div>
+
+          {/* Bonus progression grid */}
+          <div>
+            <p className="text-white/50 text-xs font-semibold uppercase tracking-wider mb-3">
+              Bonus Schedule
+            </p>
+            <div className="grid grid-cols-4 gap-2">
+              {DAILY_BONUS_AMOUNTS.map((amt, i) => {
+                const day    = i + 1;
+                const isPast = day <= info.currentStreak;
+                const isNext = day === info.currentStreak + 1;
+
+                return (
+                  <div
+                    key={i}
+                    className="rounded-xl p-2.5 text-center border transition-all"
+                    style={{
+                      background: isPast
+                        ? "rgba(52,211,153,0.10)"
+                        : isNext
+                        ? "rgba(250,204,21,0.10)"
+                        : "rgba(255,255,255,0.03)",
+                      borderColor: isPast
+                        ? "rgba(52,211,153,0.35)"
+                        : isNext
+                        ? "rgba(250,204,21,0.45)"
+                        : "rgba(255,255,255,0.07)",
+                    }}
+                  >
+                    <p
+                      className="text-[9px] font-semibold mb-1"
+                      style={{
+                        color: isPast ? "#34d399" : isNext ? "#facc15" : "rgba(255,255,255,0.22)",
+                      }}
+                    >
+                      Day {day}
+                    </p>
+                    <p
+                      className="text-sm font-black"
+                      style={{
+                        color: isPast ? "#34d399" : isNext ? "#facc15" : "rgba(255,255,255,0.28)",
+                      }}
+                    >
+                      ₹{amt}
+                    </p>
+                    {isPast && (
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 mx-auto mt-1" />
+                    )}
+                    {isNext && (
+                      <div className="w-1.5 h-1.5 rounded-full bg-yellow-400 mx-auto mt-1 animate-pulse" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Claim button */}
+          <button
+            onClick={handleClaim}
+            disabled={!info.canClaim || busy}
+            className="w-full rounded-2xl font-bold text-base flex items-center justify-center gap-2 transition-all active:scale-95"
+            style={{
+              height: 52,
+              background:
+                info.canClaim && !busy
+                  ? "linear-gradient(135deg,#facc15,#f97316)"
+                  : "rgba(255,255,255,0.07)",
+              color: info.canClaim && !busy ? "#080514" : "rgba(255,255,255,0.28)",
+              cursor: info.canClaim && !busy ? "pointer" : "not-allowed",
+              boxShadow:
+                info.canClaim && !busy ? "0 6px 24px rgba(250,204,21,0.35)" : "none",
+            }}
+          >
+            {busy ? (
+              <>
+                <span
+                  className="w-4 h-4 border-2 border-current/30 border-t-current rounded-full"
+                  style={{ animation: "spin 0.7s linear infinite" }}
+                />
+                Claiming…
+              </>
+            ) : info.canClaim ? (
+              <><Gift className="w-5 h-5" /> Claim ₹{info.nextBonusAmount}</>
+            ) : (
+              <><CheckCircle2 className="w-5 h-5" /> Claimed Today</>
+            )}
+          </button>
+
+          {!info.canClaim && (
+            <p className="text-center text-white/25 text-xs pb-2">
               Come back tomorrow to continue your streak!
             </p>
           )}
-
-          <Button
-            onClick={() => onOpenChange(false)}
-            className="w-full"
-            variant="outline"
-          >
-            Close
-          </Button>
         </div>
       </SheetContent>
     </Sheet>

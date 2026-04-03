@@ -1,82 +1,43 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
 import { useWallet } from "@/contexts/WalletContext";
-import { IndianRupee, Wallet, Users, Calendar, MessageCircle } from "lucide-react";
+import { Wallet } from "lucide-react";
 
-interface GameHeaderProps {
-  onWithdrawClick: () => void;
-  onHistoryClick: () => void;
-  onReferClick: () => void;
-  onDailyBonusClick: () => void;
-  onSupportClick: () => void;
-}
-
-export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDailyBonusClick, onSupportClick }: GameHeaderProps) {
+export function GameHeader() {
   const { balance } = useWallet();
 
   return (
-    <Card className="bg-primary border-0 shadow-lg">
-      <div className="flex items-center justify-between p-3">
-        {/* Logo/Title */}
-        <div className="flex items-center gap-2">
-          <div className="bg-primary-foreground/20 p-2 rounded-lg">
-            <Wallet className="h-4 w-4 text-primary-foreground" />
-          </div>
-          <div>
-            <h1 className="text-base font-bold text-primary-foreground">धना धन</h1>
-            <p className="text-[10px] text-primary-foreground/80">Spin & Win</p>
-          </div>
+    <div
+      className="flex items-center justify-between px-4 py-3 border-b border-white/8"
+      style={{ background: "rgba(8,5,20,0.9)", backdropFilter: "blur(12px)" }}
+    >
+      {/* Logo */}
+      <div className="flex items-center gap-2.5">
+        <div
+          className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: "linear-gradient(135deg,#6d28d9,#ec4899)" }}
+        >
+          <span className="text-white font-black text-xs">DD</span>
         </div>
-
-        {/* Balance Display */}
-        <div className="flex items-center gap-2">
-          <div className="text-right">
-            <p className="text-[10px] text-primary-foreground/80">Balance</p>
-            <div className="flex items-center gap-1">
-              <IndianRupee className="h-3 w-3 text-accent" />
-              <span className="text-lg font-bold text-primary-foreground">{balance.toLocaleString()}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex flex-col gap-1">
-          <Button
-            onClick={onDailyBonusClick}
-            size="sm"
-            className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-[10px] h-7 px-2"
-          >
-            <Calendar className="h-3 w-3 mr-1" />
-            Bonus
-          </Button>
-          <Button
-            onClick={onReferClick}
-            size="sm"
-            className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold text-[10px] h-7 px-2"
-          >
-            <Users className="h-3 w-3 mr-1" />
-            Refer
-          </Button>
-          <Button
-            onClick={onSupportClick}
-            size="sm"
-            className="bg-muted text-muted-foreground hover:bg-muted/90 font-semibold text-[10px] h-7 px-2"
-          >
-            <MessageCircle className="h-3 w-3 mr-1" />
-            Help
-          </Button>
-          <Button
-            onClick={onWithdrawClick}
-            size="sm"
-            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold text-[10px] h-7 px-2"
-          >
-            Withdraw
-          </Button>
+        <div>
+          <h1 className="text-white font-extrabold text-sm leading-tight tracking-wide">
+            धना धन
+          </h1>
+          <p className="text-white/35 text-[9px] leading-tight">Spin &amp; Win</p>
         </div>
       </div>
-    </Card>
+
+      {/* Balance pill */}
+      <div
+        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/15"
+        style={{ background: "rgba(255,255,255,0.07)" }}
+      >
+        <Wallet className="w-3.5 h-3.5 text-yellow-400" />
+        <span className="text-white/60 text-[10px] font-medium">₹</span>
+        <span className="text-yellow-400 font-black text-sm">
+          {balance.toLocaleString("en-IN")}
+        </span>
+      </div>
+    </div>
   );
 }
