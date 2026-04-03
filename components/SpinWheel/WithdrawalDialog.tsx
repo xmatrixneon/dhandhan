@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
@@ -68,15 +69,17 @@ export function WithdrawalDialog({ open, onOpenChange }: WithdrawalDialogProps) 
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="text-2xl text-center">Withdraw Funds</DialogTitle>
-          <div className="flex items-center justify-center gap-2 text-lg font-semibold text-purple-600 pt-2">
-            <IndianRupee className="h-5 w-5" />
-            Available Balance: {balance.toLocaleString()}
-          </div>
-        </DialogHeader>
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" className="rounded-t-3xl max-h-[90vh] overflow-y-auto">
+        <SheetHeader className="text-center pb-4">
+          <SheetTitle className="text-2xl font-bold">Withdraw Funds</SheetTitle>
+          <SheetDescription className="text-center">
+            <div className="flex items-center justify-center gap-2 text-lg font-semibold text-purple-600 pt-2">
+              <IndianRupee className="h-5 w-5" />
+              Available Balance: {balance.toLocaleString()}
+            </div>
+          </SheetDescription>
+        </SheetHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 pt-4">
           {/* Phone Number */}
@@ -170,7 +173,7 @@ export function WithdrawalDialog({ open, onOpenChange }: WithdrawalDialogProps) 
             Withdrawals are processed within 24-48 hours
           </p>
         </form>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }

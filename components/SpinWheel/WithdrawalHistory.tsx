@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -74,17 +74,17 @@ export function WithdrawalHistory({ open, onOpenChange }: WithdrawalHistoryProps
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg max-h-[80vh]">
-        <DialogHeader>
-          <DialogTitle className="text-2xl text-center flex items-center justify-center gap-2">
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent side="bottom" className="rounded-t-3xl max-h-[90vh] overflow-y-auto">
+        <SheetHeader className="text-center pb-4">
+          <SheetTitle className="text-2xl font-bold flex items-center justify-center gap-2">
             <History className="h-6 w-6" />
             Withdrawal History
-          </DialogTitle>
-          <DialogDescription className="text-center">
+          </SheetTitle>
+          <SheetDescription className="text-center">
             Track all your withdrawal requests
-          </DialogDescription>
-        </DialogHeader>
+          </SheetDescription>
+        </SheetHeader>
 
         <ScrollArea className="h-[400px] pr-4">
           {withdrawals.length === 0 ? (
@@ -143,7 +143,7 @@ export function WithdrawalHistory({ open, onOpenChange }: WithdrawalHistoryProps
         >
           Close
         </Button>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
