@@ -15,6 +15,7 @@ import { SpinWheelCanvas } from "./SpinWheelCanvas";
 import { WheelPointer } from "./WheelPointer";
 import { Confetti } from "./Confetti";
 import { WinnerTicker } from "./WinnerTicker";
+import { WithdrawalTicker } from "./WithdrawalTicker";
 import { GameHeader } from "./GameHeader";
 import { WithdrawalDialog } from "./WithdrawalDialog";
 import { WithdrawalHistory } from "./WithdrawalHistory";
@@ -130,6 +131,11 @@ export function SpinWheel() {
         {/* Winner Ticker */}
         <div className="mb-2 flex justify-center">
           <WinnerTicker />
+        </div>
+
+        {/* Withdrawal Ticker */}
+        <div className="mb-2 flex justify-center">
+          <WithdrawalTicker />
         </div>
 
         {/* Main Game Card */}
