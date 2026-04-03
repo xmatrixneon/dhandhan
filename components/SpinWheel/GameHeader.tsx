@@ -4,16 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useWallet } from "@/contexts/WalletContext";
-import { IndianRupee, Wallet, Users, Calendar } from "lucide-react";
+import { IndianRupee, Wallet, Users, Calendar, MessageCircle } from "lucide-react";
 
 interface GameHeaderProps {
   onWithdrawClick: () => void;
   onHistoryClick: () => void;
   onReferClick: () => void;
   onDailyBonusClick: () => void;
+  onSupportClick: () => void;
 }
 
-export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDailyBonusClick }: GameHeaderProps) {
+export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDailyBonusClick, onSupportClick }: GameHeaderProps) {
   const { balance } = useWallet();
 
   return (
@@ -58,6 +59,14 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
           >
             <Users className="h-3 w-3 mr-1" />
             Refer
+          </Button>
+          <Button
+            onClick={onSupportClick}
+            size="sm"
+            className="bg-blue-400 text-blue-900 hover:bg-blue-300 font-semibold text-[10px] h-7 px-2"
+          >
+            <MessageCircle className="h-3 w-3 mr-1" />
+            Help
           </Button>
           <Button
             onClick={onWithdrawClick}

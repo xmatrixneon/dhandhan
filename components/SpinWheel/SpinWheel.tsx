@@ -19,6 +19,7 @@ import { WithdrawalDialog } from "./WithdrawalDialog";
 import { WithdrawalHistory } from "./WithdrawalHistory";
 import { ReferralSystem } from "./ReferralSystem";
 import { DailyBonus } from "./DailyBonus";
+import { Support } from "./Support";
 import { PRIZES, TARGET_PRIZE_INDEX, WHEEL_SIZE, MIN_TAP_TARGET } from "@/lib/constants";
 import { calculateTargetRotation, animateWheel } from "@/lib/wheelUtils";
 import { canSpin, recordSpin } from "@/lib/walletUtils";
@@ -36,6 +37,7 @@ export function SpinWheel() {
   const [showHistoryDialog, setShowHistoryDialog] = useState(false);
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const [showDailyBonusDialog, setShowDailyBonusDialog] = useState(false);
+  const [showSupportDialog, setShowSupportDialog] = useState(false);
   const [spinStatus, setSpinStatus] = useState(canSpin());
 
   const targetPrize = PRIZES[TARGET_PRIZE_INDEX];
@@ -118,6 +120,7 @@ export function SpinWheel() {
             onHistoryClick={() => setShowHistoryDialog(true)}
             onReferClick={() => setShowReferralDialog(true)}
             onDailyBonusClick={() => setShowDailyBonusDialog(true)}
+            onSupportClick={() => setShowSupportDialog(true)}
           />
         </div>
 
@@ -267,6 +270,12 @@ export function SpinWheel() {
       <DailyBonus
         open={showDailyBonusDialog}
         onOpenChange={setShowDailyBonusDialog}
+      />
+
+      {/* Support Dialog */}
+      <Support
+        open={showSupportDialog}
+        onOpenChange={setShowSupportDialog}
       />
     </>
   );
