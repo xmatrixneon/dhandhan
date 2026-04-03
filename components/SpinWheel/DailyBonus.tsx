@@ -65,11 +65,11 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
   };
 
   const getStreakColor = (days: number) => {
-    if (days >= 30) return "text-red-600";
-    if (days >= 14) return "text-orange-600";
-    if (days >= 7) return "text-yellow-600";
-    if (days >= 3) return "text-green-600";
-    return "text-blue-600";
+    if (days >= 30) return "text-destructive";
+    if (days >= 14) return "text-accent-foreground";
+    if (days >= 7) return "text-accent";
+    if (days >= 3) return "text-primary";
+    return "text-muted-foreground";
   };
 
   return (
@@ -87,22 +87,22 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
 
         <div className="space-y-4 pb-4">
           {/* Current Streak Card */}
-          <Card className="bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200">
+          <Card className="bg-gradient-to-r from-accent/20 to-secondary/20 border-2 border-accent/30">
             <div className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Current Streak</p>
+                  <p className="text-sm text-muted-foreground mb-1">Current Streak</p>
                   <div className="flex items-center gap-2">
                     <span className={`text-4xl ${getStreakColor(bonusInfo.currentStreak)}`}>
                       {getStreakEmoji(bonusInfo.currentStreak)}
                     </span>
-                    <span className="text-3xl font-bold text-gray-900">
+                    <span className="text-3xl font-bold text-foreground">
                       {bonusInfo.currentStreak}
                     </span>
-                    <span className="text-lg text-gray-600">day{bonusInfo.currentStreak !== 1 ? "s" : ""}</span>
+                    <span className="text-lg text-muted-foreground">day{bonusInfo.currentStreak !== 1 ? "s" : ""}</span>
                   </div>
                 </div>
-                <Flame className={`h-8 w-8 ${bonusInfo.currentStreak >= 7 ? "text-orange-500" : "text-gray-300"}`} />
+                <Flame className={`h-8 w-8 ${bonusInfo.currentStreak >= 7 ? "text-accent" : "text-muted-foreground/30"}`} />
               </div>
             </div>
           </Card>
@@ -112,16 +112,16 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
             <div className="p-4">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <p className="text-sm text-gray-600">Next Bonus</p>
-                  <p className="text-2xl font-bold text-purple-600">
+                  <p className="text-sm text-muted-foreground">Next Bonus</p>
+                  <p className="text-2xl font-bold text-primary">
                     ₹{bonusInfo.nextBonusAmount}
                   </p>
                 </div>
-                <Gift className="h-8 w-8 text-purple-600" />
+                <Gift className="h-8 w-8 text-primary" />
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-muted-foreground">
                   {bonusInfo.canClaim ? (
                     <span className="text-green-600 font-semibold">Available now!</span>
                   ) : (
@@ -142,7 +142,7 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
           <Card>
             <div className="p-4">
               <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-purple-600" />
+                <TrendingUp className="h-5 w-5 text-primary" />
                 Bonus Progression
               </h3>
               <div className="grid grid-cols-4 gap-2">
@@ -158,19 +158,19 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
                         isPast
                           ? "bg-green-50 border-green-300"
                           : isNext
-                          ? "bg-purple-50 border-purple-300 ring-2 ring-purple-400"
-                          : "bg-gray-50 border-gray-200"
+                          ? "bg-primary/10 border-primary ring-2 ring-primary"
+                          : "bg-muted border-muted"
                       }`}
                     >
-                      <div className="text-xs text-gray-600 mb-1">Day {dayNumber}</div>
-                      <div className={`text-lg font-bold ${isPast ? "text-green-600" : isNext ? "text-purple-600" : "text-gray-400"}`}>
+                      <div className="text-xs text-muted-foreground mb-1">Day {dayNumber}</div>
+                      <div className={`text-lg font-bold ${isPast ? "text-green-600" : isNext ? "text-primary" : "text-muted-foreground"}`}>
                         ₹{amount}
                       </div>
                       {isPast && (
                         <CheckCircle2 className="h-4 w-4 text-green-600 mx-auto mt-1" />
                       )}
                       {isNext && (
-                        <div className="w-2 h-2 bg-purple-600 rounded-full mx-auto mt-1 animate-pulse" />
+                        <div className="w-2 h-2 bg-primary rounded-full mx-auto mt-1 animate-pulse" />
                       )}
                     </div>
                   );
@@ -184,19 +184,19 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
             <div className="p-4">
               <h3 className="font-bold text-lg mb-3">Your Stats</h3>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-blue-50 rounded-lg p-3 text-center">
-                  <Calendar className="h-5 w-5 mx-auto mb-1 text-blue-600" />
-                  <p className="text-2xl font-bold text-blue-600">
+                <div className="bg-secondary/50 rounded-lg p-3 text-center">
+                  <Calendar className="h-5 w-5 mx-auto mb-1 text-secondary-foreground" />
+                  <p className="text-2xl font-bold text-secondary-foreground">
                     {bonusInfo.totalDays}
                   </p>
-                  <p className="text-xs text-gray-600">Total Days</p>
+                  <p className="text-xs text-muted-foreground">Total Days</p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-3 text-center">
-                  <TrendingUp className="h-5 w-5 mx-auto mb-1 text-green-600" />
-                  <p className="text-2xl font-bold text-green-600">
+                <div className="bg-accent/50 rounded-lg p-3 text-center">
+                  <TrendingUp className="h-5 w-5 mx-auto mb-1 text-accent-foreground" />
+                  <p className="text-2xl font-bold text-accent-foreground">
                     {bonusInfo.currentStreak}
                   </p>
-                  <p className="text-xs text-gray-600">Best Streak</p>
+                  <p className="text-xs text-muted-foreground">Best Streak</p>
                 </div>
               </div>
             </div>
@@ -208,8 +208,8 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
             disabled={!bonusInfo.canClaim || isClaiming}
             className={`w-full h-14 text-lg font-bold transition-transform ${
               bonusInfo.canClaim
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 active:scale-95"
-                : "bg-gray-400 cursor-not-allowed"
+                ? "bg-primary text-primary-foreground hover:bg-primary/90 active:scale-95"
+                : "bg-muted text-muted-foreground cursor-not-allowed"
             }`}
           >
             {isClaiming ? (
@@ -228,7 +228,7 @@ export function DailyBonus({ open, onOpenChange }: DailyBonusProps) {
           </Button>
 
           {!bonusInfo.canClaim && (
-            <p className="text-xs text-center text-gray-500">
+            <p className="text-xs text-center text-muted-foreground">
               Come back tomorrow to continue your streak!
             </p>
           )}

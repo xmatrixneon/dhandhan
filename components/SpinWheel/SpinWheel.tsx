@@ -113,7 +113,7 @@ export function SpinWheel() {
     <>
       <Confetti active={showWinnerDialog} />
       <div
-        className="h-screen bg-gradient-to-b from-purple-600 via-pink-500 to-orange-400 flex flex-col p-3 safe-area-inset no-select no-tap-highlight overflow-hidden"
+        className="h-screen bg-gradient-to-b from-primary via-primary to-accent flex flex-col p-3 safe-area-inset no-select no-tap-highlight overflow-hidden"
         style={{ overflow: isSpinning ? "hidden" : "auto" }}
       >
         {/* Header */}
@@ -136,11 +136,11 @@ export function SpinWheel() {
         <div className="flex-1 flex items-center justify-center min-h-0">
           <Card className="w-full max-w-md bg-white/95 backdrop-blur-sm shadow-2xl">
             <CardHeader className="text-center pb-2 pt-3">
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <CardTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                 धना धन
               </CardTitle>
               <div className="flex items-center justify-center gap-2 mt-1">
-                <p className="text-xs text-gray-600">Spin & Win!</p>
+                <p className="text-xs text-muted-foreground">Spin & Win!</p>
                 <Badge variant="secondary" className="text-xs py-0">
                   Max: ₹5000
                 </Badge>
@@ -166,7 +166,7 @@ export function SpinWheel() {
                     height="28"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className="text-purple-600 mx-auto"
+                    className="text-primary mx-auto"
                   >
                     <path
                       d="M12 4L12 20M12 20L8 16M12 20L16 16"
@@ -176,7 +176,7 @@ export function SpinWheel() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                  <p className="text-[10px] text-center text-purple-600 font-semibold leading-tight">
+                  <p className="text-[10px] text-center text-primary font-semibold leading-tight">
                     Tap to Spin!
                   </p>
                 </div>
@@ -185,11 +185,11 @@ export function SpinWheel() {
               {/* Spin Limit Indicator */}
               <div className="text-center">
                 {spinStatus.canSpin ? (
-                  <div className="flex items-center justify-center gap-1 text-xs text-purple-600 font-semibold">
+                  <div className="flex items-center justify-center gap-1 text-xs text-primary font-semibold">
                     <span>{spinStatus.remainingSpins}/2 spins left</span>
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center gap-1 text-xs text-orange-600 font-semibold">
+                  <div className="flex items-center justify-center gap-1 text-xs text-accent-foreground font-semibold">
                     <Clock className="h-3 w-3" />
                     <span>
                       {spinStatus.nextSpinTime && (
@@ -209,8 +209,8 @@ export function SpinWheel() {
                 size="lg"
                 className={`w-full h-11 text-base font-bold transition-transform no-tap-highlight ${
                   spinStatus.canSpin
-                    ? "bg-gradient-to-r from-purple-600 to-pink-600 active:from-purple-700 active:to-pink-700 active:scale-95"
-                    : "bg-gray-400 cursor-not-allowed"
+                    ? "bg-primary text-primary-foreground active:bg-primary/90 active:scale-95"
+                    : "bg-muted text-muted-foreground cursor-not-allowed"
                 }`}
                 style={{ minHeight: `${MIN_TAP_TARGET}px` }}
               >
@@ -220,8 +220,8 @@ export function SpinWheel() {
               {/* Current Prize Display */}
               {currentPrize && !showWinnerDialog && (
                 <div className="text-center">
-                  <p className="text-sm text-gray-600">You won:</p>
-                  <p className="text-2xl font-bold text-purple-600">{currentPrize.label}</p>
+                  <p className="text-sm text-muted-foreground">You won:</p>
+                  <p className="text-2xl font-bold text-primary">{currentPrize.label}</p>
                 </div>
               )}
 
@@ -244,10 +244,10 @@ export function SpinWheel() {
             <DialogTitle className="text-2xl text-center">🎉 Congratulations! 🎉</DialogTitle>
           </DialogHeader>
           <div className="text-center py-4">
-            <div className="text-4xl font-bold text-purple-600 my-4">
+            <div className="text-4xl font-bold text-primary my-4">
               {targetPrize.label}
             </div>
-            <p className="text-gray-600 mb-2">
+            <p className="text-muted-foreground mb-2">
               You&apos;ve won the {targetPrize.label} prize in Dhana Dhan!
             </p>
             <p className="text-green-600 font-semibold">
@@ -256,7 +256,7 @@ export function SpinWheel() {
           </div>
           <Button
             onClick={() => setShowWinnerDialog(false)}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600"
+            className="w-full bg-primary text-primary-foreground"
             size="lg"
           >
             Awesome! 🎉

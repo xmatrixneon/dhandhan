@@ -74,7 +74,7 @@ export function WithdrawalDialog({ open, onOpenChange }: WithdrawalDialogProps) 
         <SheetHeader className="text-center pb-4">
           <SheetTitle className="text-2xl font-bold">Withdraw Funds</SheetTitle>
           <SheetDescription className="text-center">
-            <div className="flex items-center justify-center gap-2 text-lg font-semibold text-purple-600 pt-2">
+            <div className="flex items-center justify-center gap-2 text-lg font-semibold text-primary pt-2">
               <IndianRupee className="h-5 w-5" />
               Available Balance: {balance.toLocaleString()}
             </div>
@@ -163,7 +163,7 @@ export function WithdrawalDialog({ open, onOpenChange }: WithdrawalDialogProps) 
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-12 text-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            className="w-full h-12 text-lg bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={isProcessing || !phoneNumber || !upiId || !amount}
           >
             {isProcessing ? "Processing..." : "Submit Withdrawal Request"}

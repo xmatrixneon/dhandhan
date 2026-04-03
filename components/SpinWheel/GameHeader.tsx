@@ -18,26 +18,26 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
   const { balance } = useWallet();
 
   return (
-    <Card className="bg-gradient-to-r from-purple-600 to-pink-600 border-0 shadow-lg">
+    <Card className="bg-primary border-0 shadow-lg">
       <div className="flex items-center justify-between p-3">
         {/* Logo/Title */}
         <div className="flex items-center gap-2">
-          <div className="bg-white/20 p-2 rounded-lg">
-            <Wallet className="h-4 w-4 text-white" />
+          <div className="bg-primary-foreground/20 p-2 rounded-lg">
+            <Wallet className="h-4 w-4 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-white">धना धन</h1>
-            <p className="text-[10px] text-white/80">Spin & Win</p>
+            <h1 className="text-base font-bold text-primary-foreground">धना धन</h1>
+            <p className="text-[10px] text-primary-foreground/80">Spin & Win</p>
           </div>
         </div>
 
         {/* Balance Display */}
         <div className="flex items-center gap-2">
           <div className="text-right">
-            <p className="text-[10px] text-white/80">Balance</p>
+            <p className="text-[10px] text-primary-foreground/80">Balance</p>
             <div className="flex items-center gap-1">
-              <IndianRupee className="h-3 w-3 text-yellow-300" />
-              <span className="text-lg font-bold text-white">{balance.toLocaleString()}</span>
+              <IndianRupee className="h-3 w-3 text-accent" />
+              <span className="text-lg font-bold text-primary-foreground">{balance.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
           <Button
             onClick={onDailyBonusClick}
             size="sm"
-            className="bg-orange-400 text-orange-900 hover:bg-orange-300 font-semibold text-[10px] h-7 px-2"
+            className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold text-[10px] h-7 px-2"
           >
             <Calendar className="h-3 w-3 mr-1" />
             Bonus
@@ -55,7 +55,7 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
           <Button
             onClick={onReferClick}
             size="sm"
-            className="bg-yellow-400 text-yellow-900 hover:bg-yellow-300 font-semibold text-[10px] h-7 px-2"
+            className="bg-secondary text-secondary-foreground hover:bg-secondary/90 font-semibold text-[10px] h-7 px-2"
           >
             <Users className="h-3 w-3 mr-1" />
             Refer
@@ -63,7 +63,7 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
           <Button
             onClick={onSupportClick}
             size="sm"
-            className="bg-blue-400 text-blue-900 hover:bg-blue-300 font-semibold text-[10px] h-7 px-2"
+            className="bg-muted text-muted-foreground hover:bg-muted/90 font-semibold text-[10px] h-7 px-2"
           >
             <MessageCircle className="h-3 w-3 mr-1" />
             Help
@@ -71,7 +71,7 @@ export function GameHeader({ onWithdrawClick, onHistoryClick, onReferClick, onDa
           <Button
             onClick={onWithdrawClick}
             size="sm"
-            className="bg-white text-purple-600 hover:bg-white/90 font-semibold text-[10px] h-7 px-2"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold text-[10px] h-7 px-2"
           >
             Withdraw
           </Button>

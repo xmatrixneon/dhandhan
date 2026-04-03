@@ -80,13 +80,13 @@ export function ReferralSystem({ open, onOpenChange }: ReferralSystemProps) {
           <Card>
             <div className="p-4">
               <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-                <Share2 className="h-5 w-5 text-purple-600" />
+                <Share2 className="h-5 w-5 text-primary" />
                 Your Referral Code
               </h3>
 
-              <div className="bg-gray-100 rounded-lg p-3 mb-3">
+              <div className="bg-muted rounded-lg p-3 mb-3">
                 <div className="flex items-center justify-between">
-                  <code className="text-xl font-bold text-purple-600 tracking-wider">
+                  <code className="text-xl font-bold text-primary tracking-wider">
                     {referralStats.code}
                   </code>
                   <Button
@@ -113,7 +113,7 @@ export function ReferralSystem({ open, onOpenChange }: ReferralSystemProps) {
               <div className="flex gap-2">
                 <Button
                   onClick={handleShare}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600"
+                  className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
                   size="lg"
                 >
                   <Share2 className="h-4 w-4 mr-2" />
@@ -128,19 +128,19 @@ export function ReferralSystem({ open, onOpenChange }: ReferralSystemProps) {
             <div className="p-4">
               <h3 className="font-bold text-lg mb-3">Your Stats</h3>
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-purple-50 rounded-lg p-3 text-center">
-                  <Users className="h-6 w-6 mx-auto mb-1 text-purple-600" />
-                  <p className="text-2xl font-bold text-purple-600">
+                <div className="bg-primary/10 rounded-lg p-3 text-center">
+                  <Users className="h-6 w-6 mx-auto mb-1 text-primary" />
+                  <p className="text-2xl font-bold text-primary">
                     {referralStats.totalReferrals}
                   </p>
-                  <p className="text-xs text-gray-600">Total Referrals</p>
+                  <p className="text-xs text-muted-foreground">Total Referrals</p>
                 </div>
-                <div className="bg-green-50 rounded-lg p-3 text-center">
-                  <Gift className="h-6 w-6 mx-auto mb-1 text-green-600" />
-                  <p className="text-2xl font-bold text-green-600">
+                <div className="bg-accent/50 rounded-lg p-3 text-center">
+                  <Gift className="h-6 w-6 mx-auto mb-1 text-accent-foreground" />
+                  <p className="text-2xl font-bold text-accent-foreground">
                     Growing
                   </p>
-                  <p className="text-xs text-gray-600">Earn Rewards</p>
+                  <p className="text-xs text-muted-foreground">Earn Rewards</p>
                 </div>
               </div>
             </div>
@@ -152,19 +152,19 @@ export function ReferralSystem({ open, onOpenChange }: ReferralSystemProps) {
               <h3 className="font-bold text-lg mb-3">How it Works</h3>
               <div className="space-y-2 text-sm">
                 <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
                     1
                   </div>
                   <p>Share your referral code with friends & family</p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
                     2
                   </div>
                   <p>They sign up and play Dhana Dhan</p>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-xs">
                     3
                   </div>
                   <p>Build your network and grow together!</p>

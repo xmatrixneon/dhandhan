@@ -76,18 +76,18 @@ export function UnifiedTicker() {
   const isWinner = currentActivity.type === "winner";
 
   return (
-    <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg shadow-lg px-4 py-2 flex items-center justify-center gap-2">
+    <div className="bg-primary rounded-lg shadow-lg px-4 py-2 flex items-center justify-center gap-2">
       {isWinner ? (
         <>
-          <Trophy className="h-4 w-4 text-yellow-300 flex-shrink-0" />
-          <p className="text-sm font-bold text-white">
+          <Trophy className="h-4 w-4 text-accent flex-shrink-0" />
+          <p className="text-sm font-bold text-primary-foreground">
             {currentActivity.name} won ₹{currentActivity.amount}! 🎉
           </p>
         </>
       ) : (
         <>
-          <CheckCircle2 className="h-4 w-4 text-green-300 flex-shrink-0" />
-          <p className="text-sm font-bold text-white">
+          <CheckCircle2 className="h-4 w-4 text-green-500 flex-shrink-0" />
+          <p className="text-sm font-bold text-primary-foreground">
             {currentActivity.name} withdrew ₹{currentActivity.amount} ✓
           </p>
         </>
