@@ -20,6 +20,7 @@ import { WithdrawalHistory } from "./WithdrawalHistory";
 import { ReferralSystem } from "./ReferralSystem";
 import { DailyBonus } from "./DailyBonus";
 import { Support } from "./Support";
+import { TermsDialog } from "./TermsDialog";
 import { PRIZES, TARGET_PRIZE_INDEX, WHEEL_SIZE, MIN_TAP_TARGET } from "@/lib/constants";
 import { calculateTargetRotation, animateWheel } from "@/lib/wheelUtils";
 import { canSpin, recordSpin } from "@/lib/walletUtils";
@@ -38,6 +39,7 @@ export function SpinWheel() {
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const [showDailyBonusDialog, setShowDailyBonusDialog] = useState(false);
   const [showSupportDialog, setShowSupportDialog] = useState(false);
+  const [showTermsDialog, setShowTermsDialog] = useState(false);
   const [spinStatus, setSpinStatus] = useState(canSpin());
 
   const targetPrize = PRIZES[TARGET_PRIZE_INDEX];
@@ -216,6 +218,14 @@ export function SpinWheel() {
                   <p className="text-2xl font-bold text-purple-600">{currentPrize.label}</p>
                 </div>
               )}
+
+              {/* Terms Link */}
+              <button
+                onClick={() => setShowTermsDialog(true)}
+                className="text-xs text-gray-500 underline hover:text-gray-700"
+              >
+                Terms & Conditions
+              </button>
             </CardContent>
           </Card>
         </div>
@@ -276,6 +286,12 @@ export function SpinWheel() {
       <Support
         open={showSupportDialog}
         onOpenChange={setShowSupportDialog}
+      />
+
+      {/* Terms Dialog */}
+      <TermsDialog
+        open={showTermsDialog}
+        onOpenChange={setShowTermsDialog}
       />
     </>
   );

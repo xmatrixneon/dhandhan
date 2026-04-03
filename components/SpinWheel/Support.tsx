@@ -9,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { MessageCircle, Mail, AlertCircle, Clock, Gamepad2, Ban } from "lucide-react";
+import { MessageCircle, Mail, AlertCircle, Clock, Gamepad2, Smartphone } from "lucide-react";
 
 interface SupportProps {
   open: boolean;
@@ -60,10 +60,10 @@ export function Support({ open, onOpenChange }: SupportProps) {
               </h3>
               <div className="space-y-3 text-sm text-gray-700">
                 <div className="flex items-start gap-2">
-                  <Ban className="h-4 w-4 text-red-600 flex-shrink-0 mt-0.5" />
+                  <Smartphone className="h-4 w-4 text-purple-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <p className="font-semibold text-gray-900">No App Installation Required</p>
-                    <p className="text-xs text-gray-600">This is a web-based game. No app download or installation needed.</p>
+                    <p className="font-semibold text-gray-900">App Installation</p>
+                    <p className="text-xs text-gray-600">Download from official app stores only. Not responsible for unauthorized sources.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-2">

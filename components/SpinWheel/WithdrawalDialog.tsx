@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useWallet } from "@/contexts/WalletContext";
 import { toast } from "sonner";
-import { IndianRupee, Phone, Banknote, Clock, Ban, AlertCircle } from "lucide-react";
+import { IndianRupee, Phone, Banknote } from "lucide-react";
 
 interface WithdrawalDialogProps {
   open: boolean;
@@ -158,22 +158,6 @@ export function WithdrawalDialog({ open, onOpenChange }: WithdrawalDialogProps) 
                 ₹{quickAmount}
               </Button>
             ))}
-          </div>
-
-          {/* Terms & Conditions */}
-          <div className="bg-blue-50 rounded-lg p-3 space-y-2 text-xs">
-            <div className="flex items-start gap-2">
-              <Clock className="h-3 w-3 text-blue-600 flex-shrink-0 mt-0.5" />
-              <p className="text-gray-700"><strong>Processing Time:</strong> 24-48 hours</p>
-            </div>
-            <div className="flex items-start gap-2">
-              <Ban className="h-3 w-3 text-red-600 flex-shrink-0 mt-0.5" />
-              <p className="text-gray-700"><strong>No App Required:</strong> Web-based game only</p>
-            </div>
-            <div className="flex items-start gap-2">
-              <AlertCircle className="h-3 w-3 text-orange-600 flex-shrink-0 mt-0.5" />
-              <p className="text-gray-700"><strong>Daily Play:</strong> Play daily to maintain streak</p>
-            </div>
           </div>
 
           {/* Submit Button */}
