@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,10 +17,14 @@ import { Confetti } from "./Confetti";
 import { GameHeader } from "./GameHeader";
 import { WithdrawalDialog } from "./WithdrawalDialog";
 import { WithdrawalHistory } from "./WithdrawalHistory";
+import { ReferralSystem } from "./ReferralSystem";
+import { DailyBonus } from "./DailyBonus";
 import { PRIZES, TARGET_PRIZE_INDEX, WHEEL_SIZE, MIN_TAP_TARGET } from "@/lib/constants";
 import { calculateTargetRotation, animateWheel } from "@/lib/wheelUtils";
+import { canSpin, recordSpin } from "@/lib/walletUtils";
 import { useWallet } from "@/contexts/WalletContext";
 import type { Prize } from "@/lib/constants";
+import { Clock, Users } from "lucide-react";
 
 export function SpinWheel() {
   const { balance, addWinnings } = useWallet();
@@ -30,15 +34,42 @@ export function SpinWheel() {
   const [showWinnerDialog, setShowWinnerDialog] = useState(false);
   const [showWithdrawalDialog, setShowWithdrawalDialog] = useState(false);
   const [showHistoryDialog, setShowHistoryDialog] = useState(false);
+  const [showReferralDialog, setShowReferralDialog] = useState(false);
+  const [showDailyBonusDialog, setShowDailyBonusDialog] = useState(false);
+  const [spinStatus, setSpinStatus] = useState(canSpin());
 
   const targetPrize = PRIZES[TARGET_PRIZE_INDEX];
+
+  // Update spin status every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSpinStatus(canSpin());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSpin = () => {
     if (isSpinning) return;
 
+    // Check spin limits
+    const spinCheck = canSpin();
+    if (!spinCheck.canSpin) {
+      if (spinCheck.nextSpinTime) {
+        const hours = Math.ceil((spinCheck.nextSpinTime - Date.now()) / (1000 * 60 * 60));
+        toast.error(`Come back in ${hours} hour${hours > 1 ? "s" : ""}!`, {
+          description: `You've used your 2 spins for today`,
+        });
+      }
+      return;
+    }
+
     setIsSpinning(true);
     setCurrentPrize(null);
     setShowWinnerDialog(false);
+
+    // Record the spin
+    recordSpin();
 
     // Calculate the rigged rotation to always land on ₹500
     const targetRotation = calculateTargetRotation();
@@ -59,6 +90,9 @@ export function SpinWheel() {
 
         // Add winnings to balance
         addWinnings(targetPrize.value);
+
+        // Update spin status
+        setSpinStatus(canSpin());
 
         // Show toast notification
         toast.success(`🎉 You won ${targetPrize.label}!`, {
@@ -82,6 +116,8 @@ export function SpinWheel() {
           <GameHeader
             onWithdrawClick={() => setShowWithdrawalDialog(true)}
             onHistoryClick={() => setShowHistoryDialog(true)}
+            onReferClick={() => setShowReferralDialog(true)}
+            onDailyBonusClick={() => setShowDailyBonusDialog(true)}
           />
         </div>
 
@@ -135,15 +171,39 @@ export function SpinWheel() {
                 </div>
               )}
 
+              {/* Spin Limit Indicator */}
+              <div className="text-center">
+                {spinStatus.canSpin ? (
+                  <div className="flex items-center justify-center gap-1 text-xs text-purple-600 font-semibold">
+                    <span>{spinStatus.remainingSpins}/2 spins left</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center gap-1 text-xs text-orange-600 font-semibold">
+                    <Clock className="h-3 w-3" />
+                    <span>
+                      {spinStatus.nextSpinTime && (
+                        <>
+                          {Math.ceil((spinStatus.nextSpinTime - Date.now()) / (1000 * 60 * 60))}h left
+                        </>
+                      )}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               {/* Spin Button */}
               <Button
                 onClick={handleSpin}
-                disabled={isSpinning}
+                disabled={isSpinning || !spinStatus.canSpin}
                 size="lg"
-                className="w-full h-11 text-base font-bold bg-gradient-to-r from-purple-600 to-pink-600 active:from-purple-700 active:to-pink-700 active:scale-95 transition-transform no-tap-highlight"
+                className={`w-full h-11 text-base font-bold transition-transform no-tap-highlight ${
+                  spinStatus.canSpin
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 active:from-purple-700 active:to-pink-700 active:scale-95"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
                 style={{ minHeight: `${MIN_TAP_TARGET}px` }}
               >
-                {isSpinning ? "🎰 Spinning..." : "🎲 Spin!"}
+                {isSpinning ? "🎰 Spinning..." : !spinStatus.canSpin ? "⏰ Limit Reached" : "🎲 Spin!"}
               </Button>
 
               {/* Current Prize Display */}
@@ -195,6 +255,18 @@ export function SpinWheel() {
       <WithdrawalHistory
         open={showHistoryDialog}
         onOpenChange={setShowHistoryDialog}
+      />
+
+      {/* Referral System Dialog */}
+      <ReferralSystem
+        open={showReferralDialog}
+        onOpenChange={setShowReferralDialog}
+      />
+
+      {/* Daily Bonus Dialog */}
+      <DailyBonus
+        open={showDailyBonusDialog}
+        onOpenChange={setShowDailyBonusDialog}
       />
     </>
   );
