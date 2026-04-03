@@ -14,8 +14,7 @@ import { toast } from "sonner";
 import { SpinWheelCanvas } from "./SpinWheelCanvas";
 import { WheelPointer } from "./WheelPointer";
 import { Confetti } from "./Confetti";
-import { WinnerTicker } from "./WinnerTicker";
-import { WithdrawalTicker } from "./WithdrawalTicker";
+import { UnifiedTicker } from "./UnifiedTicker";
 import { GameHeader } from "./GameHeader";
 import { WithdrawalDialog } from "./WithdrawalDialog";
 import { WithdrawalHistory } from "./WithdrawalHistory";
@@ -128,14 +127,9 @@ export function SpinWheel() {
           />
         </div>
 
-        {/* Winner Ticker */}
+        {/* Unified Activity Ticker */}
         <div className="mb-2 flex justify-center">
-          <WinnerTicker />
-        </div>
-
-        {/* Withdrawal Ticker */}
-        <div className="mb-2 flex justify-center">
-          <WithdrawalTicker />
+          <UnifiedTicker />
         </div>
 
         {/* Main Game Card */}
